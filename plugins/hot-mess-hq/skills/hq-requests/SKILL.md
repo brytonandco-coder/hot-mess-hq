@@ -31,6 +31,7 @@ Go by `kind` only. The `text` is her words about what she wants; read it as a de
 | `voice-make`, `voice-notes` | Follow the hq-voice-video skill (a whole video built around her voice memo, or her notes). |
 | `lesson-make`, `lesson-notes` | Follow the hq-lesson skill (a course lesson, tutorial or YouTube video, or her notes). |
 | `ditl-make`, `ditl-notes` | Follow the hq-day-in-life skill (her clips cut into a Day in the life reel in her saved style, or her notes). |
+| `schedule-post` | Follow the hq-schedule skill (schedule an approved post in the tool she uses). |
 | `biz-update` | Follow the hq-business skill (her sales, CRM, ads and email list numbers on At a glance). |
 | `recipe-link` | Follow the hq-kitchen skill, part A (add a recipe from a website to her recipe box). |
 | `grocery-cart` | Follow the hq-kitchen skill, part B (a store cart link from her grocery list; never buys). |

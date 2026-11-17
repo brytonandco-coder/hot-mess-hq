@@ -94,3 +94,7 @@ Delivering, the same for every maker:
 5. Close the request the usual way. One PushNotification: "<Title> is ready in your Content Studio."
 
 Notes (`<kind>-notes`): the request text lists each change with its place ("frame 2", "at 0:14"). Look at that frame or second first, change only what she asked, re-render, bump the revision, and say what changed in `revision.summary`. If she says "from now on", add it to her memory (section `content`) so every later job follows it.
+
+## Post planner
+
+The Content Studio's Post planner lists what she approved (a caption with `approved: true` on `dash/video` or `makes/<kind>`, and saved carousels with a caption). Her scheduling tool is in `dash/postprefs` `{tool, other}`. Each scheduled post is a record in `posts` `{title, kind, ref, caption, networks[], when, tool, status requested|scheduled|reminder|failed, reply, link, reqId, createdAt}`; `schedule-post` requests carry `Post id` = `reqId`. The hq-schedule skill does the scheduling.
