@@ -82,7 +82,7 @@ Scheduled jobs run only while the Claude app is open on her computer. If one was
 
 The Content Studio has tabs that hand a whole job to her Claude. The page sends a request (`story-make`, `voice-make`, `lesson-make`, `ditl-make`, and `story-notes`, `voice-notes`, `lesson-notes`, `ditl-notes` for changes) and shows the result from one doc per tab:
 
-- `data/users/me/hq/makes` / `story` | `voice` | `lesson` | `ditl`: `{kind, title, status: requested|making|revising|ready|failed, reply, size: "9:16"|"4:5"|"16:9", revision: {n, date: "Mon D", summary}, parts: [{label, driveId | assetId, type}], scenes: [{t, text}], zip: {driveId | assetId, name}, sticker, notes: [], sentNotes: [{part, t, where, text}], at}`
+- `data/users/me/hq/makes` / `voice` | `lesson` | `ditl`, and the story versions `story-video` | `story-voice` | `story-lesson` | `story-ditl` | `story-carousel` (there is no Stories tab: every finished video and carousel has Make a story version): `{kind, title, status: requested|making|revising|ready|failed, reply, size: "9:16"|"4:5"|"16:9", revision: {n, date: "Mon D", summary}, parts: [{label, driveId | assetId, type}], scenes: [{t, text}], zip: {driveId | assetId, name}, sticker, notes: [], sentNotes: [{part, t, where, text}], at}`
 - Her saved choices: `data/users/me/hq/dash` / `makeprefs` `{captions: true|false, ditl: {style: cozy|fun|clean|film, example}}`.
 - Uploaded files in a request look like `[uploaded file "name", Google Drive id X]` (client page) or `[uploaded file "name", asset id X]` (Bryton's test copy: read it with the Artifact tool, `path` = the asset id).
 

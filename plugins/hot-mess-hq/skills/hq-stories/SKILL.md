@@ -1,20 +1,28 @@
 ---
 name: hq-stories
-description: Makes an Instagram story sequence that sells (3 to 7 frames, 9:16) for the Stories tab of her Hot Mess HQ Content Studio, in her Brand Brain look, and applies her frame-by-frame notes. Used by hq-requests for "story-make" and "story-notes" requests, or when she says "make stories for my offer", "turn my video into stories" or "do my story notes".
+description: Makes the story version of something she made in her Hot Mess HQ Content Studio (her edited video, Voice to Video, lesson, Day in the life reel or carousel), either reused as 2 to 5 story frames or as a 3 to 7 frame story sequence that sells her offer, in her Brand Brain look, and applies her frame-by-frame notes. Used by hq-requests for "story-make" and "story-notes" requests, or when she says "make a story version", "turn my video into stories" or "do my story notes".
 ---
 
-# Stories for Hot Mess HQ
+# Story versions for Hot Mess HQ
 
 First read `../../reference/hq-map.md` (Brand Brain rules, and "Studio makers" for where things go and how to deliver). Use the hyperframes skill for building and rendering.
 
+Stories aren't a tool of their own: every finished video and carousel in the Content Studio has a **Make a story version** button. The request says what it was made from and where to save the result: `makes/story-<src>` (src = video, voice, lesson, ditl or carousel). Deliver to that doc, not `makes/story`.
+
 ## 1. Plan the story
 
-From the request: what she sells, the link, where to start (her offer, her latest Studio video, or a topic), details, how many frames, which sticker, and any example screenshots.
+From the request: what it was made from (title, Drive or asset id, what's in it), the kind (**story version of this** or **sell my offer with it**), what she sells, the link and the sticker.
+
+**Story version of this (reuse, 2 to 5 frames):** use what she made, don't start over.
+- A video: cut its strongest 5 to 15 second moments into frames (the hook first, the payoff last). It's already 9:16 if it was a reel; a 16:9 lesson gets reframed to keep her and the action in view. Re-place any words so they sit inside the story safe area, and add short on-screen words (many people watch stories muted). The last frame invites them to the full post ("New video, tap to watch") with the sticker spot.
+- A carousel: each slide (4:5) sits on a 9:16 background in her colors with a little room above and below, gently animated; 3 to 5 of the strongest slides, the last one with the sticker spot.
+
+**Sell my offer with it (3 to 7 frames):** a story that sells, using what she made as the proof or the hook (below).
 
 A story that sells moves in this order, squeezed to fit the frame count: **hook** (stop the tap-through: a question or a bold line about her buyer's problem), **the problem** (how it feels, in her buyer's words), **the answer** (her offer, named), **proof** (a real result, testimonial or screenshot she gave you; if she gave none, use a placeholder frame and ask for one in the reply), **the offer** (what they get, price only if she gave it), **the ask** (one clear action). Three frames = hook, answer, ask.
 
 - One idea per frame, readable in 2 seconds: a headline of 3 to 8 words, at most one short line under it.
-- From her latest video: pull the hook and one or two strong lines from its transcript; the ask is "watch the full video" with the link sticker.
+- Use what she made: its hook, a strong line from its transcript, or a slide, as a frame.
 - Example screenshots: copy their structure, pacing and how text sits on the frame. Never their words, pictures, prices or logo.
 - Only claims and numbers she gave you or that are in her Brand Brain or memory. Never invent results or testimonials.
 
