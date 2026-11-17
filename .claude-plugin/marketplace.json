@@ -1,0 +1,14 @@
+{
+  "name": "hot-mess-hq",
+  "owner": {
+    "name": "Bryton VonEssen"
+  },
+  "description": "The helpers behind Hot Mess HQ: they check your email, your weather and your requests, and edit your videos, while Claude is open on your computer.",
+  "plugins": [
+    {
+      "name": "hot-mess-hq",
+      "source": "./plugins/hot-mess-hq",
+      "description": "Connects your Claude to your private Hot Mess HQ page and runs its background jobs: requests from the page, inbox sweep, morning weather and video edits."
+    }
+  ]
+}

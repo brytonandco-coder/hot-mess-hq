@@ -1,0 +1,8 @@
+{
+  "name": "hot-mess-hq",
+  "description": "Connects your Claude to your private Hot Mess HQ page and runs its background jobs: requests you send from the page, the inbox sweep, the morning weather, video edits, animated carousels, your business numbers at a glance your recipes and grocery cart, your Brand Brain and what you have told it to remember (your colors, logo and voice on everything Claude makes).",
+  "version": "0.7.0",
+  "author": {
+    "name": "Bryton VonEssen"
+  }
+}
