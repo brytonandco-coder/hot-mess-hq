@@ -98,3 +98,7 @@ Notes (`<kind>-notes`): the request text lists each change with its place ("fram
 ## Post planner
 
 The Content Studio's Post planner lists what she approved (a caption with `approved: true` on `dash/video` or `makes/<kind>`, and saved carousels with a caption). Her scheduling tool is in `dash/postprefs` `{tool, other}`. Each scheduled post is a record in `posts` `{title, kind, ref, caption, networks[], when, tool, status requested|scheduled|reminder|failed, reply, link, reqId, createdAt}`; `schedule-post` requests carry `Post id` = `reqId`. The hq-schedule skill does the scheduling.
+
+## Her Sales Floor (a separate page)
+
+The Sales Floor is its own page: https://claude.ai/artifact/KRZMzwhfMw935BV4VoBY9P (shared with each client separately). Her data there is in `data/users/me/sf/...` (ArtifactData with that page's `url`). Her HQ business plan (`data/users/me/hq/dash/plan`) is copied to the Sales Floor as `data/users/me/sf/dash/hqplan`, and her Sales Floor offer (`data/users/me/sf/dash/offer`) is copied to the HQ as `data/users/me/hq/dash/sfoffer`, by the hq-requests skill on every run (see its Sales Floor sync).
