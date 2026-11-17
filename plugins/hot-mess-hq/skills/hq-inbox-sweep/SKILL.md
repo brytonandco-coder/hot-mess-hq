@@ -52,4 +52,8 @@ Only emails that need her: bills or payments due, deadlines, school forms or eve
 
 If `notify` is "none", no notification. Otherwise, if any new item is important or has an event, send ONE PushNotification (status "proactive"), under 160 characters, a few words per item, for example: "Inbox: 2 important (bill due Fri, client waiting) and 1 event to add. Open Hot Mess HQ."
 
+## Step 6: Needs you
+
+Then follow the hq-needs skill, so her "Needs you" feed is fresh too (it shares this sweep's one notification).
+
 Finish with one line: how many new, how many important, how many events. Don't list email contents.
