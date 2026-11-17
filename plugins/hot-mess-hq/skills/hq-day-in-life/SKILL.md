@@ -1,6 +1,6 @@
 ---
 name: hq-day-in-life
-description: Cuts her phone clips into a Day in the life reel in the style she saved on the Day in the life tab of her Hot Mess HQ Editing Studio (cozy, fast and fun, clean, or home movie), with words on screen and music in her Brand Brain look, and applies her notes. Used by hq-requests for "ditl-make" and "ditl-notes" requests, or when she says "make my day in the life".
+description: Cuts her phone clips into a Day in the life reel in the style she saved on the Day in the life tab of her Hot Mess HQ Content Studio (cozy, fast and fun, clean, or home movie), with words on screen and music in her Brand Brain look, and applies her notes. Used by hq-requests for "ditl-make" and "ditl-notes" requests, or when she says "make my day in the life".
 ---
 
 # Day in the life for Hot Mess HQ

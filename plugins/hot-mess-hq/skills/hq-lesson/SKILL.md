@@ -1,6 +1,6 @@
 ---
 name: hq-lesson
-description: Edits her course lessons, tutorials and YouTube videos (16:9) for the Lessons tab of her Hot Mess HQ Editing Studio, in her Brand Brain look. Screen recordings get zooms, circles, step cards, tip cards and blurring of anything private; on-camera lessons get graphics beside her, chapter cards and an end card. Used by hq-requests for "lesson-make" and "lesson-notes" requests, or when she says "edit my lesson".
+description: Edits her course lessons, tutorials and YouTube videos (16:9) for the Lessons tab of her Hot Mess HQ Content Studio, in her Brand Brain look. Screen recordings get zooms, circles, step cards, tip cards and blurring of anything private; on-camera lessons get graphics beside her, chapter cards and an end card. Used by hq-requests for "lesson-make" and "lesson-notes" requests, or when she says "edit my lesson".
 ---
 
 # Lessons for Hot Mess HQ

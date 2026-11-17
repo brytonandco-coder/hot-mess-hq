@@ -25,7 +25,7 @@ One plugin, `hot-mess-hq`:
 | `hq-requests` | Picks up what you sent from the page: new video, video notes, email check times, recipes | Every 2 hours, 8am to 8pm |
 | `hq-inbox-sweep` | Reads your email (never sends or deletes) and puts what needs you on the page | Your chosen times |
 | `hq-weather` | Today's forecast and one nudge on the Morning Briefing | 6am |
-| `hq-video` | First edit and revisions of your videos, saved to your own Google Drive | When you ask from the Editing Studio |
+| `hq-video` | First edit and revisions of your videos, saved to your own Google Drive | When you ask from the Content Studio |
 | `hq-brand`, `hq-business`, `hq-carousel`, `hq-kitchen` | Brand Brain, business numbers, animated carousels, recipes and grocery lists | When you ask from the page |
 
 The helpers only run while the Claude app is open on your computer.

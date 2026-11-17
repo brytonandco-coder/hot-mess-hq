@@ -1,6 +1,6 @@
 ---
 name: hq-voice-video
-description: Turns her voice memo into a whole branded video with nobody on camera, for the Voice to Video tab of her Hot Mess HQ Editing Studio. Cleans her voice, builds scenes that act out every line on her exact words, adds sound effects and captions in her Brand Brain look, and applies her notes. Used by hq-requests for "voice-make" and "voice-notes" requests, or when she says "make a video from my voice memo".
+description: Turns her voice memo into a whole branded video with nobody on camera, for the Voice to Video tab of her Hot Mess HQ Content Studio. Cleans her voice, builds scenes that act out every line on her exact words, adds sound effects and captions in her Brand Brain look, and applies her notes. Used by hq-requests for "voice-make" and "voice-notes" requests, or when she says "make a video from my voice memo".
 ---
 
 # Voice to Video for Hot Mess HQ

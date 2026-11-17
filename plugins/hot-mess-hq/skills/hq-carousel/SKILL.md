@@ -1,6 +1,6 @@
 ---
 name: hq-carousel
-description: Makes an animated version of a carousel she built on the Carousel tab of her Hot Mess HQ Editing Studio. Each slide becomes a short looping 4:5 video in her Brand Brain colors, fonts and logo, made with HyperFrames and saved to her Google Drive. Used by hq-requests for "carousel-anim" requests, or when she says "animate my carousel" or "make my carousel move".
+description: Makes an animated version of a carousel she built on the Carousel tab of her Hot Mess HQ Content Studio. Each slide becomes a short looping 4:5 video in her Brand Brain colors, fonts and logo, made with HyperFrames and saved to her Google Drive. Used by hq-requests for "carousel-anim" requests, or when she says "animate my carousel" or "make my carousel move".
 ---
 
 # Animated carousel for Hot Mess HQ

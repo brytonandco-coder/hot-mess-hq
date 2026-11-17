@@ -26,7 +26,7 @@ Every Hot Mess HQ skill reads this first.
 | Her Brand Brain | `data/users/me/hq/dash` | `brand` | `business`, `what`, `audience`, `handles`, `website`, `colors` {`main`, `accent`, `light`, `dark`, `extra`} (hex, any may be ""), `fontVibe` (elegant, clean, bold, hand, playful), `headingFont`, `bodyFont`, `words` (up to 3), `sound`, `phrases`, `avoid`, `emoji` (yes, some, no), `cta`, `captions` (clean, bold, fun), `effects` (subtle, some, lots), `endLogo`, `hasLogo`, `claudeFill`, `done`, `filledBy` (fields Claude filled) |
 | Her logo | `data/users/me/hq/dash` | `brandlogo` | `main`, `light` (small PNG data URLs; `light` is for dark backgrounds) |
 | Her business numbers (At a glance) | `data/users/me/hq/dash` | `biz` | `sales` {`app`, `url`, `month`, `count`, `last`}, `crm` {`app`, `url`, `leads`, `deals`, `followups`}, `ads` {`app`, `url`, `spend`, `results`, `cpr`}, `list` {`app`, `url`, `subs`, `new`, `open`}; each card also `updatedAt`, `by` (claude or you). Numbers are plain (no currency signs); `null` means unknown |
-| Her carousels (Editing Studio, Carousel tab) | `data/users/me/hq/carousels` | (auto ids) | `title`, `data` (JSON string: `title`, `caption`, `look` light/soft/bold/dark, `slides` [{`kind` hook/point/list/quote/cta, `head`, `body`, `items`}]), `updatedAt` |
+| Her carousels (Content Studio, Carousel tab) | `data/users/me/hq/carousels` | (auto ids) | `title`, `data` (JSON string: `title`, `caption`, `look` light/soft/bold/dark, `slides` [{`kind` hook/point/list/quote/cta, `head`, `body`, `items`}]), `updatedAt` |
 | Mom's own chores and rewards | `data/users/me/hq/dash` | `mom` | `chores` [{`id`, `name`, `days` (daily, weekdays or [0-6]), `size` (quick, medium, long)}], `rewards` [{`name`, `cost`}], `earned`, `spent`, `days` {date: points}, `made` {date, ids}, `claims`. The page turns her chores into to-dos (`items` doc id `chore-<id>-<date>`, `chore: true`). Don't change her points |
 | The Kitchen | see the hq-kitchen skill | | `recipes`, `dash/kitchen`, `mealweeks/<Monday>`, `dash/grocery`; tonight's dinner name is also in `dash/today` `dinner` |
 | Needs you (people waiting on her, money) | `data/users/me/hq/needs` | `t-<threadId>` or `m-<id>` | `kind` (lead, client, money, school, personal, other), `who`, `email`, `subject`, `why`, `draft`, `threadId`, `messageId`, `url`, `waitingDays`, `status` (new, drafted, done, snoozed), `snoozeUntil`, `by` (page or helper), `at`. Made by the page and the hq-needs skill; she handles them on the page |
@@ -80,7 +80,7 @@ Scheduled jobs run only while the Claude app is open on her computer. If one was
 
 ## Studio makers: Stories, Voice to Video, Lessons, Day in the life
 
-The Editing Studio has tabs that hand a whole job to her Claude. The page sends a request (`story-make`, `voice-make`, `lesson-make`, `ditl-make`, and `story-notes`, `voice-notes`, `lesson-notes`, `ditl-notes` for changes) and shows the result from one doc per tab:
+The Content Studio has tabs that hand a whole job to her Claude. The page sends a request (`story-make`, `voice-make`, `lesson-make`, `ditl-make`, and `story-notes`, `voice-notes`, `lesson-notes`, `ditl-notes` for changes) and shows the result from one doc per tab:
 
 - `data/users/me/hq/makes` / `story` | `voice` | `lesson` | `ditl`: `{kind, title, status: requested|making|revising|ready|failed, reply, size: "9:16"|"4:5"|"16:9", revision: {n, date: "Mon D", summary}, parts: [{label, driveId | assetId, type}], scenes: [{t, text}], zip: {driveId | assetId, name}, sticker, notes: [], sentNotes: [{part, t, where, text}], at}`
 - Her saved choices: `data/users/me/hq/dash` / `makeprefs` `{captions: true|false, ditl: {style: cozy|fun|clean|film, example}}`.
@@ -91,6 +91,6 @@ Delivering, the same for every maker:
 2. Make it (the skill).
 3. Save everything to her Google Drive in `Hot Mess HQ files/<Stories | Voice videos | Lessons | Day in the life>/<NN-topic>/`. Phone-sized copies (H.264, `-crf 24 -maxrate 5M`, AAC 128k, `+faststart`) under 15 MB each go on the page: it plays them from their Drive id (or an asset id if you can upload to the page with the Artifact tool's `publish` + `asset: true`).
 4. `set` the doc: `status: "ready"`, `parts`, `scenes` (one line per scene with its start second), `revision` (n+1 on notes, with a one-line summary), `reply` (one plain sentence in her voice), `notes: []`, `at: <now ms>`. Keep `title` unless she renamed it. If it can't be made: `status: "failed"` and `reply` saying what she needs to do.
-5. Close the request the usual way. One PushNotification: "<Title> is ready in your Editing Studio."
+5. Close the request the usual way. One PushNotification: "<Title> is ready in your Content Studio."
 
 Notes (`<kind>-notes`): the request text lists each change with its place ("frame 2", "at 0:14"). Look at that frame or second first, change only what she asked, re-render, bump the revision, and say what changed in `revision.summary`. If she says "from now on", add it to her memory (section `content`) so every later job follows it.

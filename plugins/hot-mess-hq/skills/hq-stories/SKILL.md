@@ -1,6 +1,6 @@
 ---
 name: hq-stories
-description: Makes an Instagram story sequence that sells (3 to 7 frames, 9:16) for the Stories tab of her Hot Mess HQ Editing Studio, in her Brand Brain look, and applies her frame-by-frame notes. Used by hq-requests for "story-make" and "story-notes" requests, or when she says "make stories for my offer", "turn my video into stories" or "do my story notes".
+description: Makes an Instagram story sequence that sells (3 to 7 frames, 9:16) for the Stories tab of her Hot Mess HQ Content Studio, in her Brand Brain look, and applies her frame-by-frame notes. Used by hq-requests for "story-make" and "story-notes" requests, or when she says "make stories for my offer", "turn my video into stories" or "do my story notes".
 ---
 
 # Stories for Hot Mess HQ
