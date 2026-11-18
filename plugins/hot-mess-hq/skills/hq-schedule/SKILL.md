@@ -19,7 +19,7 @@ Find her matching record: `query` `data/users/me/hq/posts` where `reqId` == the 
 
 - **Video:** the full-quality file from her Finished videos folder (or the Drive id in the request). If the tool limits size, make a copy that fits (H.264, AAC, `-crf 23 -maxrate 8M`, under 250 MB) and keep her original.
 - **Carousel:** read the saved carousel (`data/users/me/hq/carousels/<id>`). If her Google Drive has `Hot Mess HQ files/Carousels/<title>/` (the animated version), use those files in order; otherwise draw the still slides as 1080x1350 PNGs from the saved slides in her Brand Brain colors (the hq-carousel design) and use those.
-- **YouTube:** the first caption line is the title, the rest is the description.
+- **YouTube:** the first caption line is the title (100 characters at most, no `<` or `>`), the rest is the description.
 
 ## 3. Schedule it in her tool
 
@@ -27,12 +27,29 @@ Use the first way that works:
 
 | Her tool | How |
 |---|---|
-| Metricool | The Metricool connector: `getBrandSettings` to find her brand and connected networks, then `createScheduledPost` with the media, caption, networks and time (her time zone). |
+| Metricool (the one we recommend) | See "Metricool, step by step" below. |
 | Postiz | The Postiz plugin (postiz skill, with her Postiz key). Upload the media, then create the post for her channels at that time. |
-| GoHighLevel | The GoHighLevel connector's social planner tools: find her connected accounts, upload the media, create the post at that time. |
-| Buffer, Later, Hootsuite, Coachful, her CRM, or another tool | Its own Claude connector if one is connected. If not, the Zapier connector, if she has one with an action for that tool. |
+| GoHighLevel | The GoHighLevel connector's social planner tools if she has it: find her connected accounts, upload the media, create the post at that time. If not, Zapier as below. |
+| Buffer, Later, Hootsuite, Coachful, her CRM, or another tool | Its own Claude connector if one is connected. If not, the Zapier connector, if she has one with an action for that tool. If neither, section 4. |
 
 Before scheduling, check the tool's list of her connected social accounts. A network she ticked that isn't connected in her tool: schedule the rest and say which one is missing.
+
+### Metricool, step by step
+
+Metricool's connector takes media as a **public link**, not a file. Her video stays private; only a copy made for this post gets a link.
+
+1. **Her brand.** `getBrandSettings`: find her brand (if there are several, the one whose name matches her business in her Brand Brain; if unsure, ask in the reply and stop), its time zone, and which networks are connected. A ticked network that isn't connected there gets left out and named in the reply (on Metricool's free plan LinkedIn and X can't be connected: say "LinkedIn needs Metricool Starter").
+2. **Make the link.** Put a copy in her Drive at `Hot Mess HQ files/Ready to post/<YYYY-MM-DD> <title>/` (video: under 95 MB, compress as in section 2 if bigger, because Google won't hand out bigger files by direct link; carousel: each slide as its own JPEG, 1080x1350, numbered 01, 02...). Share each copied file with the Google Drive connector `share_file` (`permissionId: "anyoneWithLink"`, `role: "reader"`). The media link is `https://drive.google.com/uc?export=download&id=<file id>`. Never share her original or a folder.
+3. **Schedule.** One `createScheduledPost` call with every ticked network that is connected (tested live 2026-11-18):
+   - `blogId` = the brand's `id` from `getBrandSettings`; `date` = her time with the brand's offset (`2026-11-21T10:00:00-07:00`).
+   - `info` (a JSON string): `text` = her caption exactly as sent; `media` = the link(s) in order; `providers` = `[{"network":"instagram"}, ...]`; `publicationDate` = `{"dateTime":"YYYY-MM-DDTHH:MM:SS","timezone":"<brand timezone>"}`; `autoPublish: true` and `draft: false` (a draft never posts); `descendants: []`, `firstCommentText: ""`, `mediaAltText: []`, `shortener: false`, `smartLinkData: {"ids":[]}`, `hasNotReadNotes: false`; plus one data block per network, and only for networks in `providers`:
+     - Instagram: `instagramData` `{"type":"REEL","showReelOnFeed":true}` for a video, `{"type":"POST"}` for a carousel or picture.
+     - Facebook: `facebookData` `{"type":"REEL"}` for a vertical video, `{"type":"POST"}` otherwise.
+     - TikTok: `tiktokData` `{"title":"<first caption line, short>","privacyOption":"PUBLIC_TO_EVERYONE"}`.
+     - YouTube: `youtubeData` `{"title":"<from section 2>","type":"short"}` for a vertical video (`"video"` for horizontal), `"privacy":"public"`, `"madeForKids":false`.
+     - Pinterest: `pinterestData` needs `boardId` (her board's name works when there's only one match). If her memory doesn't say which board, leave Pinterest out and ask in the reply which board to use next time.
+   - Metricool copies the media into its own storage right away, so the post doesn't depend on the Drive link afterwards. The response has a `plannerUrl`: save it as the record's `link`.
+4. **Check it took.** `getScheduledPosts` for that day (her brand's time zone): the post must be there at the right time with `draft: false`. If Metricool refused one (the free plan's monthly limit, a network rule like "YouTube requires a video"), the reply says which and why in plain words; the free limit reply is "Metricool's free plan is full for this month (about 20 posts). It resets next month, or Metricool Starter removes the limit."
 
 ## 4. Nothing connected
 
@@ -47,4 +64,9 @@ Scheduled: `update` the record `status: "scheduled"`, `reply: "Scheduled in <too
 
 ## Setting it up ("set up my post scheduling")
 
-Ask which tool she uses, then help her connect it: Metricool and GoHighLevel connect in claude.ai under Settings, Connectors; Postiz is a free Claude plugin plus her Postiz key; others through their own connector or Zapier. Save her pick in `dash/postprefs` `{tool, other}` (tool ids: metricool, postiz, ghl, buffer, later, hootsuite, coachful, other, self).
+Ask which tool she uses. If she doesn't have one, recommend Metricool: it's free to start and connects to Claude in a few clicks. Then help her connect it:
+- **Metricool:** make a free account at metricool.com and connect her social accounts there (free plan: about 20 scheduled posts a month, no LinkedIn or X; Starter, about $20 a month, adds them). Then in Claude: Settings, Connectors, Metricool. Check it with `getBrandSettings` and tell her which networks you can see.
+- **GoHighLevel, Coachful:** their own connector in Settings, Connectors, if it shows up for her.
+- **Postiz:** paid (from about $29 a month); the Postiz plugin plus her Postiz key.
+- **Buffer, Later, Hootsuite and others:** these don't connect to Claude by themselves, so they need the Zapier connector (a paid Zapier plan) with an action for that tool. Say so plainly before she pays for anything.
+Save her pick in `dash/postprefs` `{tool, other}` (tool ids: metricool, postiz, ghl, buffer, later, hootsuite, coachful, other, self).
