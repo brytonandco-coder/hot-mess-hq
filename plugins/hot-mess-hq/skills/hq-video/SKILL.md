@@ -48,15 +48,25 @@ She reviews before the slow render, not after it.
 - **Render settings that work:** `npx hyperframes render -w 1` (parallel workers have broken caption timing on some computers). Give every caption chunk and timed overlay an explicit opacity in and out in its timeline, and hide typing ghosts with `opacity:0`, not `visibility:hidden`.
 - **Getting it onto the page:** if you can upload to the page (the Artifact tool's `publish` with `asset: true` and the page `url` works for you), upload the draft there and set `assetId` in `dash/video`: it plays instantly. Otherwise use her Drive (`driveId`). Keep the full-quality file in her Drive either way (`downloadId`).
 
+## My videos (she can send the next one while you work)
+
+The page keeps a list of every video she sent in `data/users/me/hq/videos`, one doc per video (id like `v-1763571234567`), and lets her send a new one any time. `dash/video` is only the one she has open in the editor, and it carries that video's `id`.
+
+- **Which video:** every request from the page has a line `Video id: v-...`. That video's doc in `videos` is the one you work on. No such line (an older page): work on `dash/video` as before.
+- **One at a time, oldest first.** Finish one video (render included) before starting the next request. Never render two at once: it makes both slower.
+- **Write to the video's own doc.** Every field this skill says to write to `dash/video` (label, topic, file, driveId, assetId, downloadId, revision, readyAt, stage) goes to `videos/<id>` with `update`. Then ALSO write the same fields to `dash/video` only if `dash/video.id` is that id, or `dash/video` is missing. If she has a different video open, leave `dash/video` alone: the page shows the finished one in My videos with a New tag and a pop-up, and she opens it when she's ready.
+- **Status on the video's doc** (`status`, plus `note` and `progress` 0 to 100 for the card): new video `editing` while you work, then `draft` when it's on the page; her notes `revising` while you work, then `draft`; final `finalizing`, then `final`; can't finish `failed` with `note` (one plain sentence, no period) and `at: <now ms>`. Keep `dash/videojob` moving too, as below, for older pages.
+- **Notes:** her notes for a video have `video` = that video's `file`. Use the `file` in `videos/<id>`.
+
 ## A. New video
 
-1. `update` `data/users/me/hq/dash` / `videojob` to `status: "editing"` (with `if_version`).
+1. `update` `data/users/me/hq/dash` / `videojob` to `status: "editing"` (with `if_version`), and `videos/<id>` to `status: "editing", progress: 10, note: "Finding your video"`.
 2. **Find the video.** Settings may list several Raw videos folders: look in all of them. Use the one she named (search every listed folder, then her whole Drive by name), or else the newest video file (`.mp4`, `.mov`, `.m4v`) across all listed folders. If those folders have nothing new, also check the rest of her synced Drive for a video file added in the last 2 days and use it if there's exactly one; say where you found it in your reply. Wait until its size stops changing (still syncing). Use the clip where it is: never move, rename or delete a raw clip, and never stop just because it's in a different folder. Only if there's truly no video: set `videojob` to `status: "failed"`, `note: "I couldn't find a new video. Add it to your Raw videos folder and send it again."`, close the request with that reply, stop.
    - Raw videos only in Drive, not on this computer: download with the Google Drive connector only if it's small enough to come through; otherwise fail with `note: "install Google Drive for desktop so I can reach your videos"`.
 3. **Edit** (above). Use her `about` and `goal` for the hook and the payoff. Save the finished file to her Finished videos folder as `NN-topic.mp4` (next number, short topic).
 4. **Preview copy** under 15 MB: `ffmpeg -y -i <finished> -vf scale=540:960 -c:v libx264 -crf 26 -preset veryfast -c:a aac -b:a 128k -movflags +faststart <Hot Mess HQ files>/NN-topic-preview.mp4`.
 5. **Get its Drive id.** With Google Drive for desktop, the copy syncs by itself: wait, then Google Drive `search_files` for the file name until it shows (up to about 5 minutes) and take its `id`. Without it, upload with Google Drive `create_file` into the `Hot Mess HQ files` folder (`dash/drive.folderId`). The full-quality file stays in Finished videos; put its Drive id in `downloadId` if you have it.
-6. **Put it on the line:** `set` `data/users/me/hq/dash` / `video` (with `if_version` if it exists) = `{label: "<a short, catchy title for this video, 2 to 6 words, from what she says in it>", topic, file: "NN-topic.mp4", driveId: <preview id>, downloadId: <full id or null>, revision: {n: 1, date: "YYYY-MM-DD", summary: ""}, readyAt: <now ms>, seenAt: null}`.
+6. **Put it on the line:** `update` `videos/<id>` with these fields plus `status: "draft", stage: "draft"`, and only if she has no other video open (see My videos) `set` `data/users/me/hq/dash` / `video` (with `if_version` if it exists) to the same plus `id`. Fields: `{label: "<a short, catchy title for this video, 2 to 6 words, from what she says in it>", topic, file: "NN-topic.mp4", driveId: <preview id>, downloadId: <full id or null>, revision: {n: 1, date: "YYYY-MM-DD", summary: ""}, readyAt: <now ms>, seenAt: null}`.
 7. **Hang your edits** as tags with one ArtifactData `batch` into `data/users/me/hq/notes`, doc ids `c-NN-r1-01`, `c-NN-r1-02`…: `{video: "NN-topic.mp4", revision: 1, kind: "claude", status: "done", t: <seconds on the cut>, text: "<one plain line>", createdAt: <now ms>}`. 6 to 12 tags she'd want to check: the hook, big cuts, words added, sounds, the payoff.
 8. `videojob` to `status: "ready"`. Close the request: `reply: "Your video is ready for your final pass in The Studio."`
 9. One PushNotification: `Your video "<topic>" is ready for your final pass: <page link>#content`.
@@ -66,7 +76,7 @@ She reviews before the slow render, not after it.
 The page shows her a progress bar from `dash/videojob` while you work, so keep it current. Every write here is an `update` (with `if_version`) that sets `kind: "notes"`; leave the other fields alone. If `videojob` is busy with a new video or a final video (`kind` isn't "notes" and `status` is requested, editing or finalizing), skip these videojob writes: the page still shows progress from the request and the notes.
 
 0. **Tell the page you started**, before anything else: `videojob` to `{kind: "notes", status: "editing", startedAt: <now ms>, progress: 10, note: "Reading your notes"}`. Then move it along with one short plain line as you go (no symbols), for example `progress: 30, note: "Looking at each spot you marked"`, `progress: 55, note: "Making your changes"`, `progress: 80, note: "Rendering your new version"`, `progress: 92, note: "Putting it on your page"`. Four or five updates in all, never more than one a minute.
-1. `query` `data/users/me/hq/notes` where `status` == "sent" and `video` == the `file` in `dash/video`.
+1. `update` `videos/<id>` to `status: "revising"`. `query` `data/users/me/hq/notes` where `status` == "sent" and `video` == the `file` in `videos/<id>` (or in `dash/video` when the request has no video id). Write the new revision (step 5) to `videos/<id>` with `status: "draft"`, and to `dash/video` only if it's the open one.
 2. **Her files:** a note with a `driveId` points at a file she added to her Drive folder. Use her synced copy in `Hot Mess HQ files` if it's on this computer, otherwise Google Drive `download_file_content`.
 3. "Undo this: …" notes reverse that Claude edit.
 4. Look at the frames at each note's second before changing anything (she usually pauses just after the moment she means). Make every change, re-render, save over the same numbered file.
@@ -83,7 +93,7 @@ If you can't finish: still close her notes as step 6 says, then `videojob` to `{
 1. `videojob` to `status: "finalizing"` (the page may have set it already).
 2. Apply any notes in the request the way part B does.
 3. Render once at full size (1080x1920 or 1920x1080), `-w 1`, then make it phone-sized (`-crf 23 -maxrate 5M`) into Finished videos as the same `NN-topic.mp4`.
-4. Get its Drive id (A5) and `update` `dash/video` with `downloadId`, `stage: "final"`, `revision.summary: "Final video"`, `readyAt: <now ms>`. Keep the draft preview playing, or replace it with a fresh half-size copy of the final.
+4. Get its Drive id (A5) and `update` `videos/<id>` (plus `status: "final"`) and, if it's the open one, `dash/video` with `downloadId`, `stage: "final"`, `revision.summary: "Final video"`, `readyAt: <now ms>`. Keep the draft preview playing, or replace it with a fresh half-size copy of the final.
 5. `videojob` to `status: "ready"`. Close the request: `reply: "Your final video is ready to download in The Studio."` One PushNotification with the same words and the page link.
 
 ## Rules
