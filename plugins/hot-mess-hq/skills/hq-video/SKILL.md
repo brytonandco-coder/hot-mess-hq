@@ -9,6 +9,15 @@ First read `../../reference/hq-map.md` and her `~/Hot Mess HQ/settings.md` (fold
 
 Her videos live in **her own Google Drive**, never on the page itself (the page is shared by many moms; only her Drive is private to her). The page plays the preview from her Drive by its file id.
 
+## Her private Studio page (My Studio)
+
+If settings list a **My Studio** page, her video editing lives there instead of on the shared HQ: a private page only she can open, built from the same Studio parts (`studio/index.html` in the dashboard folder). On it:
+- The same docs sit at the page's top level: `dash/video`, `dash/videojob`, `notes` (not under `data/users/me/hq/`).
+- Videos can go in the page's own asset store (it's private): upload the preview with the Artifact tool (`publish`, `asset: true`, the Studio `url`) and set `assetId`. Keep the full-quality file in her Drive (`downloadId`).
+- **Send to Claude** posts a comment that starts "Review notes for…" and reaches the Claude chat watching the page. Start right away, no need for her to say anything. Do part B with these paths, keeping `dash/videojob` moving (editing with progress, then ready) so her page shows each step, and reply on the comment thread with one line when the new revision is up, then resolve it.
+- A chat only hears Send while it watches the page: when she starts a new chat for video work, call ArtifactComments `watch` on her Studio `url` once (or republish it) and tell her Send now comes to this chat.
+- Anything else (her Brand Brain, the HQ's requests) stays on the HQ page as before.
+
 ## How to edit
 
 - **Her brand first:** read her Brand Brain (`dash/brand`, `dash/brandlogo`; rules in the map). Every title, caption, effect, graphic and end card you add uses her colors and fonts, not Bryton's and not the Hot Mess HQ page's. Captions follow `captions` (clean = small, sentence case, `dark` on a soft `light` pill or white with a shadow; bold = big chunky words, key word in `main` or `accent`; fun = bouncy pop-in, alternating `main` and `accent` highlights). How much to add follows `effects` (subtle = only what she asked for; some = her asks plus 2 or 3 of your own; lots = her asks plus a few more, still never over her face). Words you put on screen and the hook follow her voice. Her logo goes on the last 2 seconds when `endLogo` is true. If her own video editing skill sets colors or fonts, the Brand Brain wins where they differ (she filled it in more recently), unless she says otherwise.
@@ -54,6 +63,9 @@ She reviews before the slow render, not after it.
 
 ## B. Her notes
 
+The page shows her a progress bar from `dash/videojob` while you work, so keep it current. Every write here is an `update` (with `if_version`) that sets `kind: "notes"`; leave the other fields alone. If `videojob` is busy with a new video or a final video (`kind` isn't "notes" and `status` is requested, editing or finalizing), skip these videojob writes: the page still shows progress from the request and the notes.
+
+0. **Tell the page you started**, before anything else: `videojob` to `{kind: "notes", status: "editing", startedAt: <now ms>, progress: 10, note: "Reading your notes"}`. Then move it along with one short plain line as you go (no symbols), for example `progress: 30, note: "Looking at each spot you marked"`, `progress: 55, note: "Making your changes"`, `progress: 80, note: "Rendering your new version"`, `progress: 92, note: "Putting it on your page"`. Four or five updates in all, never more than one a minute.
 1. `query` `data/users/me/hq/notes` where `status` == "sent" and `video` == the `file` in `dash/video`.
 2. **Her files:** a note with a `driveId` points at a file she added to her Drive folder. Use her synced copy in `Hot Mess HQ files` if it's on this computer, otherwise Google Drive `download_file_content`.
 3. "Undo this: …" notes reverse that Claude edit.
@@ -61,7 +73,10 @@ She reviews before the slow render, not after it.
 5. New preview copy and Drive id (A4, A5), named `NN-topic-preview-rN.mp4`. `update` `dash/video` with the new `driveId` (never change `label`: she may have renamed it, and `named: true` means she did), `revision: {n: <n+1>, date, summary: "<one plain sentence>"}`, `readyAt: <now ms>`. Move the previous preview to her Drive trash only if it's yours and nothing points at it any more (Google Drive `trash_file`); never delete her own files.
 6. Close each note: `update` to `status: "done"`, `reply: "<what you changed>. Revision N."`. Couldn't do one: still mark it done and say why.
 7. Tag this round's edits (A7, ids `c-NN-rN-01`…). Delete your earlier tags for edits she undid.
-8. Close the request and notify her: "Revision N is ready".
+8. `videojob` to `{kind: "notes", status: "ready", progress: 100, doneAt: <now ms>, note: "Revision N is ready"}` (after step 5's `readyAt`, so the page shows "Your edits are ready").
+9. Close the request and send one PushNotification: `Your edits are ready: revision N of "<label>". <page link>#content`.
+
+If you can't finish: still close her notes as step 6 says, then `videojob` to `{kind: "notes", status: "failed", at: <now ms>, note: "<what went wrong and what she can do, one plain sentence, no period>"}`, close the request with the same words, and notify her.
 
 ## C. Final video ("final-video" request)
 
