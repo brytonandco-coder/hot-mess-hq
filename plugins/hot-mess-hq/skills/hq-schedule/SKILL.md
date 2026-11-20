@@ -64,10 +64,10 @@ Scheduled: `update` the record `status: "scheduled"`, `reply: "Scheduled in <too
 
 ## Mirror her posting app
 
-Her Post planner shows a read-only mirror of what's scheduled in her tool, so she never has to open it. Run this for a `posts-sync` request, after scheduling a post, and from hq-requests 2b. **Read only: never change, move or delete anything in her tool here.**
+Her Post planner shows a read-only posting calendar of what's scheduled (and recently posted) in her tool, with a small picture of each post, so she never has to open it. Run this for a `posts-sync` request, after scheduling a post, and from hq-requests 2b. **Read only: never change, move or delete anything in her tool here.**
 
 1. Read `dash/postprefs` for her tool. `self` or empty: stop.
-2. List her posts from 2 weeks ago to 30 days ahead with the first way that works:
+2. List her posts from 5 weeks ago to 6 weeks ahead (so this month and next fill in) with the first way that works:
 
 | Her tool | How to list |
 |---|---|
@@ -77,9 +77,16 @@ Her Post planner shows a read-only mirror of what's scheduled in her tool, so sh
 | Riverside | `platform_list_studios` for her studio's `id`, `productionId` and `riversideUrl`, then `social_list_uploads` with an explicit `from`/`to`. Riverside lists one row per platform: merge rows with the same `clipId` and `targetDate` into one post with several networks (YOUTUBE_SHORTS is youtube). Title = the YouTube Shorts title of that clip if there is one, else the first caption line; link = `postUrl` once posted, else the studio's `riversideUrl`. |
 | Anything else | Its own connector's list or calendar tool if it has one, or a Zapier "find posts" action. If nothing can read it, write only `error` (step 4). |
 
-3. For each post keep only: `id` (the tool's id), `title` (short; first caption line if there's no title, at most 80 characters), `caption` (at most 300 characters), `when` (ISO with her time zone offset), `networks` (lowercase: instagram, facebook, tiktok, youtube, linkedin, pinterest, x, threads), `status` (`scheduled`, `posted`, `failed` or `draft`), `link`. At most 60 posts, soonest first. Never copy media, private messages, comments or account details.
-4. `set` `data/users/me/hq/dash` / `postmirror` to `{tool: "<her tool's name>", at: <now ms>, link: "<the tool's planner page>", posts: [...], error: ""}`, keeping any `requested` value. If her tool couldn't be reached, `update` only `{at: <now ms>, error: "I couldn't reach <tool> this time. Check that it's still connected in Claude, Settings, Connectors."}` and leave the old `posts` so she still sees the last good list.
-5. If a record in `posts` (sent from the page) matches a mirrored post by `link`, or by the same time and caption, set its `mirrorId` to that post's id.
+3. For each post keep only: `id` (the tool's id), `title` (short; first caption line if there's no title, at most 80 characters), `caption` (at most 300 characters), `when` (ISO with her time zone offset), `networks` (lowercase: instagram, facebook, tiktok, youtube, linkedin, pinterest, x, threads), `status` (`scheduled`, `posted`, `failed` or `draft`), `link`, and `thumb` (a picture key, step 4). At most 60 posts, soonest first. Never copy private messages, comments or account details.
+4. **A small picture of each post** (the page shows them on her posting calendar). Posts that share the same video or image share one picture: use one key per piece of media (the tool's media or clip id, else the file name). Get each picture the first way that works:
+   1. Already in her last mirror: reuse `thumbs[key]` from the current `dash/postmirror` (don't redo pictures every run).
+   2. The tool's own preview image or media link (Metricool and Postiz posts carry their media links; GoHighLevel posts carry media URLs): download it.
+   3. Her matching file: the Finished videos folder, `Ready to post`, or the saved carousel (slide 1), matched by title, caption or the `posts` record. Take a frame from about 1.5 seconds in: `ffmpeg -ss 1.5 -i <video> -frames:v 1`.
+   4. Once it's posted on YouTube: `https://i.ytimg.com/vi/<video id>/hqdefault.jpg` (crop the middle to 9:16 for a Short).
+   5. None of these: leave `thumb` out; the page shows a plain tile with the first letter.
+   Make every picture tiny: `ffmpeg -i <in> -frames:v 1 -vf "crop='min(iw,ih*9/16)':'min(ih,iw*16/9)',scale=108:192" -q:v 7 out.jpg` (about 3 KB; a carousel or square image: `scale=108:135` after cropping to 4:5). Store it as a `data:image/jpeg;base64,...` string in `thumbs`. Keep at most 40 pictures (drop the oldest posted ones first), so the whole document stays well under 200 KB. Don't use the page's file uploads for these: they would be visible to every client on a shared page.
+5. `set` `data/users/me/hq/dash` / `postmirror` to `{tool: "<her tool's name>", at: <now ms>, link: "<the tool's planner page>", posts: [...], thumbs: {<key>: "data:image/jpeg;base64,..."}, error: ""}`, keeping any `requested` value. If her tool couldn't be reached, `update` only `{at: <now ms>, error: "I couldn't reach <tool> this time. Check that it's still connected in Claude, Settings, Connectors."}` and leave the old `posts` and `thumbs` so she still sees the last good calendar.
+6. If a record in `posts` (sent from the page) matches a mirrored post by `link`, or by the same time and caption, set its `mirrorId` to that post's id.
 
 ## Setting it up ("set up my post scheduling")
 
