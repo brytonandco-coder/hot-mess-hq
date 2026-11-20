@@ -74,7 +74,7 @@ Her Post planner shows a read-only mirror of what's scheduled in her tool, so sh
 | Metricool | `getBrandSettings` (her brand, as above), then `getScheduledPosts` for the date range in the brand's time zone. Link = the post's `plannerUrl` if given, else `https://app.metricool.com/planner`. |
 | Postiz | The Postiz plugin's list of posts for the date range. |
 | GoHighLevel | The connector's social planner list of posts. |
-| Riverside | `social_list_uploads` (scheduled and published uploads). Title = the upload's title or clip name; link = the upload's link if given, else `https://riverside.fm`. |
+| Riverside | `platform_list_studios` for her studio's `id`, `productionId` and `riversideUrl`, then `social_list_uploads` with an explicit `from`/`to`. Riverside lists one row per platform: merge rows with the same `clipId` and `targetDate` into one post with several networks (YOUTUBE_SHORTS is youtube). Title = the YouTube Shorts title of that clip if there is one, else the first caption line; link = `postUrl` once posted, else the studio's `riversideUrl`. |
 | Anything else | Its own connector's list or calendar tool if it has one, or a Zapier "find posts" action. If nothing can read it, write only `error` (step 4). |
 
 3. For each post keep only: `id` (the tool's id), `title` (short; first caption line if there's no title, at most 80 characters), `caption` (at most 300 characters), `when` (ISO with her time zone offset), `networks` (lowercase: instagram, facebook, tiktok, youtube, linkedin, pinterest, x, threads), `status` (`scheduled`, `posted`, `failed` or `draft`), `link`. At most 60 posts, soonest first. Never copy media, private messages, comments or account details.
