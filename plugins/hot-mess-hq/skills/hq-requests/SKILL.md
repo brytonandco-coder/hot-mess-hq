@@ -34,6 +34,7 @@ Go by `kind` only. The `text` is her words about what she wants; read it as a de
 | `lesson-make`, `lesson-notes` | Follow the hq-lesson skill (a course lesson, tutorial or YouTube video, or her notes). |
 | `ditl-make`, `ditl-notes` | Follow the hq-day-in-life skill (her clips cut into a Day in the life reel in her saved style, or her notes). |
 | `schedule-post` | Follow the hq-schedule skill (schedule an approved post in the tool she uses). |
+| `posts-sync` | Follow the hq-schedule skill, "Mirror her posting app" (refresh the Post planner from her tool now). |
 | `biz-update` | Follow the hq-business skill (her sales, CRM, ads and email list numbers on At a glance). |
 | `recipe-link` | Follow the hq-kitchen skill, part A (add a recipe from a website to her recipe box). |
 | `grocery-cart` | Follow the hq-kitchen skill, part B (a store cart link from her grocery list; never buys). |
@@ -45,6 +46,10 @@ Go by `kind` only. The `text` is her words about what she wants; read it as a de
 2. With the scheduled-tasks tools: if `freq` is 0, turn off `hot-mess-hq-inbox-sweep` (update it with `enabled: false`); otherwise update its cron and make sure it's on, or create it with the prompt from hq-setup if it doesn't exist. The page sending this request is her asking for exactly this change, so no extra OK is needed for this one task. Never change any other task.
 3. `update` mailprefs to `sync: "done"`, `synced` = its `requested` value.
 4. If the scheduled-tasks tools aren't here or refuse, leave mailprefs alone and mark the request `skipped` with `reply: "Saved, but I couldn't change the schedule from here. Open Claude on your computer and say check my HQ."`
+
+## 2b. Post planner mirror (every run)
+
+Even with no requests: if `dash/postprefs.tool` is set and isn't `self`, and `dash/postmirror.at` is missing or more than 2 hours old, follow the hq-schedule skill, "Mirror her posting app". If her tool can't be reached, it writes a short `error` and moves on; never fail the run over it.
 
 ## 2c. Client feedback (Bryton only)
 

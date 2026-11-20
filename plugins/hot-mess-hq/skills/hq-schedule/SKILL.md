@@ -60,7 +60,26 @@ If there's no connector for her tool, don't guess with anything else. Do the nex
 
 ## 5. Close it
 
-Scheduled: `update` the record `status: "scheduled"`, `reply: "Scheduled in <tool> for <day, time> on <networks>."`, `link` = the post's link in the tool if it gives one. Failed: `status: "failed"`, `reply` = what went wrong in one plain sentence and what she can do. Close the request the usual way. One PushNotification only if it failed.
+Scheduled: `update` the record `status: "scheduled"`, `reply: "Scheduled in <tool> for <day, time> on <networks>."`, `link` = the post's link in the tool if it gives one, `mirrorId` = the tool's id for the post (so the Post planner shows it once, not twice). Then refresh the mirror (below). Failed: `status: "failed"`, `reply` = what went wrong in one plain sentence and what she can do. Close the request the usual way. One PushNotification only if it failed.
+
+## Mirror her posting app
+
+Her Post planner shows a read-only mirror of what's scheduled in her tool, so she never has to open it. Run this for a `posts-sync` request, after scheduling a post, and from hq-requests 2b. **Read only: never change, move or delete anything in her tool here.**
+
+1. Read `dash/postprefs` for her tool. `self` or empty: stop.
+2. List her posts from 2 weeks ago to 30 days ahead with the first way that works:
+
+| Her tool | How to list |
+|---|---|
+| Metricool | `getBrandSettings` (her brand, as above), then `getScheduledPosts` for the date range in the brand's time zone. Link = the post's `plannerUrl` if given, else `https://app.metricool.com/planner`. |
+| Postiz | The Postiz plugin's list of posts for the date range. |
+| GoHighLevel | The connector's social planner list of posts. |
+| Riverside | `social_list_uploads` (scheduled and published uploads). Title = the upload's title or clip name; link = the upload's link if given, else `https://riverside.fm`. |
+| Anything else | Its own connector's list or calendar tool if it has one, or a Zapier "find posts" action. If nothing can read it, write only `error` (step 4). |
+
+3. For each post keep only: `id` (the tool's id), `title` (short; first caption line if there's no title, at most 80 characters), `caption` (at most 300 characters), `when` (ISO with her time zone offset), `networks` (lowercase: instagram, facebook, tiktok, youtube, linkedin, pinterest, x, threads), `status` (`scheduled`, `posted`, `failed` or `draft`), `link`. At most 60 posts, soonest first. Never copy media, private messages, comments or account details.
+4. `set` `data/users/me/hq/dash` / `postmirror` to `{tool: "<her tool's name>", at: <now ms>, link: "<the tool's planner page>", posts: [...], error: ""}`, keeping any `requested` value. If her tool couldn't be reached, `update` only `{at: <now ms>, error: "I couldn't reach <tool> this time. Check that it's still connected in Claude, Settings, Connectors."}` and leave the old `posts` so she still sees the last good list.
+5. If a record in `posts` (sent from the page) matches a mirrored post by `link`, or by the same time and caption, set its `mirrorId` to that post's id.
 
 ## Setting it up ("set up my post scheduling")
 
@@ -69,4 +88,4 @@ Ask which tool she uses. If she doesn't have one, recommend Metricool: it's free
 - **GoHighLevel, Coachful:** their own connector in Settings, Connectors, if it shows up for her.
 - **Postiz:** paid (from about $29 a month); the Postiz plugin plus her Postiz key.
 - **Buffer, Later, Hootsuite and others:** these don't connect to Claude by themselves, so they need the Zapier connector (a paid Zapier plan) with an action for that tool. Say so plainly before she pays for anything.
-Save her pick in `dash/postprefs` `{tool, other}` (tool ids: metricool, postiz, ghl, buffer, later, hootsuite, coachful, other, self).
+Save her pick in `dash/postprefs` `{tool, other}` (tool ids: metricool, postiz, ghl, buffer, later, hootsuite, coachful, other, self). A tool not on that list (like Riverside) is `other` with its name in `other`. Then run "Mirror her posting app" once so her Post planner fills right away.
