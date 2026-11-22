@@ -1,0 +1,27 @@
+<!doctype html><html><head><meta charset=utf8>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Montserrat:wght@400;500&display=block">
+<style>html,body{margin:0;background:transparent}svg{display:block}</style></head><body>
+<svg id=s xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 2000 2000">
+<rect id=bg width=2000 height=2000 fill="#FFFFFF"/>
+<g id=g transform="translate(1000 1000) scale(.84) translate(-1000 -1000)">
+<path id=top fill=none /><path id=bot fill=none />
+<path id=line fill=none stroke="#111" stroke-width=26 />
+<text id=tt font-family="Montserrat" font-weight=500 font-size=96 letter-spacing=26 fill="#111"><textPath href="#top">BRYTON VONESSEN</textPath></text>
+<text id=bt font-family="Montserrat" font-weight=500 font-size=96 letter-spacing=26 fill="#111"><textPath href="#bot">HOT MESS</textPath></text>
+<text x=990 y=975 text-anchor=middle dominant-baseline=central font-family="Playfair Display" font-weight=600 font-size=900 letter-spacing=-10 fill="#111">HQ</text>
+</g></svg>
+<script>
+const P=(r,a)=>[1000+r*Math.cos(a*Math.PI/180),1000+r*Math.sin(a*Math.PI/180)];
+function arc(r,a0,a1,cw){const[x0,y0]=P(r,a0),[x1,y1]=P(r,a1);const sweep=cw?1:0;const big=Math.abs(a1-a0)>180?1:0;return `M${x0} ${y0} A${r} ${r} 0 ${big} ${sweep} ${x1} ${y1}`}
+window.build=(o)=>{
+ if(o){document.getElementById('bg').setAttribute('fill',o.bg);for(const e of document.querySelectorAll('#g [fill="#111"],#g text'))e.setAttribute('fill',o.fg);document.getElementById('line').setAttribute('stroke',o.fg)}
+ const R=930, Rt=900, Rb=985, gap=5;
+ const t0=200; document.getElementById('top').setAttribute('d',arc(Rt,t0,t0+170,true));
+ const Lt=document.getElementById('tt').getComputedTextLength(); const t1=t0+Lt/Rt*180/Math.PI - 26/Rt*180/Math.PI;
+ const bc=62; document.getElementById('bot').setAttribute('d',arc(Rb,bc+60,bc-60,false));
+ const Lb=document.getElementById('bt').getComputedTextLength()-26; const half=Lb/Rb*90/Math.PI;
+ document.querySelector('#bt textPath').setAttribute('startOffset',(60*Math.PI/180*Rb - Lb/2)+'');
+ const b0=bc+half, b1=bc-half;
+ document.getElementById('line').setAttribute('d',arc(R,t1+gap,360+b1-gap,true)+' '+arc(R,b0+gap,t0-gap,true));
+};
+</script></body></html>
