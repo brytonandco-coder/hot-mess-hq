@@ -23,9 +23,16 @@ One HyperFrames composition per slide, 1080x1350, 6 seconds, looping cleanly (th
 - Hold everything still and readable for at least the last 2.5 seconds before the loop.
 - Slide 1 also as a still PNG (the cover, since Instagram shows it first).
 
-## 3. Save and tell her
+## 3. Save, put it on her page, and tell her
 
-Render to MP4 (H.264, no sound). Put the files in her Google Drive in `Hot Mess HQ files/Carousels/<title>/` as `01.png`, `01.mp4`, `02.mp4`... plus `caption.txt`. Close the request with `reply`: "Your animated carousel is in your Google Drive: Hot Mess HQ files > Carousels > <title>. Post the slides in order." Written in her voice if her Brand Brain is done.
+The request has a line `Carousel id: <id>` (older requests may not: then match the title in `carousels`). Her page shows the moving slides from one doc: `data/users/me/hq/caranim` / `<carousel id>` (on Bryton's test copy: `caranim/<carousel id>`).
+
+1. When you start: `update` that doc to `status: "making"` (if it doesn't exist, `set` it with `title`, `status: "making"`, `parts: []`, `at`).
+2. Render to MP4 (H.264, no sound). Put the files in her Google Drive in `Hot Mess HQ files/Carousels/<title>/` as `01.png`, `01.mp4`, `02.mp4`... plus `caption.txt`.
+3. Make phone-sized copies for the page: H.264, `-crf 24 -maxrate 5M -bufsize 10M -pix_fmt yuv420p -movflags +faststart`, no sound, each under 15 MB. Put each on the page by its Google Drive id (upload the copies to the same Drive folder, e.g. `02-page.mp4`), or on Bryton's test copy as a page asset (Artifact tool `publish` with `asset: true`) and use the asset id.
+4. `set` the doc: `title`, `status: "ready"`, `words` (keep the value the page wrote: it tells the page which version was animated), `parts`: one per slide in order, `{slide: 1, driveId | assetId, type: "image/png"}` for the still cover, then `{slide: N, driveId | assetId, type: "video/mp4"}` for the rest, `revision: {n: <old n + 1>, date: "Mon D", summary}` (summary only when it's a redo: one plain sentence on what changed), `reply` (one plain sentence in her voice), `at: <now ms>`.
+5. If it can't be made: `status: "failed"`, `reply` saying in plain words what she needs to do. Keep any old `parts` so her last animated version still plays.
+6. Close the request with `reply`: "Your animated carousel is on your Carousel tab, and in your Google Drive: Hot Mess HQ files > Carousels > <title>." Written in her voice if her Brand Brain is done.
 
 ## Rules
 
