@@ -7,6 +7,8 @@ description: Cuts her phone clips into a Day in the life reel in the style she s
 
 First read `../../reference/hq-map.md` (Brand Brain rules, and "Studio makers") and `~/Hot Mess HQ/settings.md`. Use the hyperframes skill for building and rendering.
 
+Any words you write for her audience (hooks, on-screen words, headlines, captions) follow the map's "Her marketing method" section as well as her voice. Her own words and notes are never rewritten to fit it.
+
 ## 1. Gather the clips
 
 Her clips are in `Hot Mess HQ files/Day in the life clips` in her Google Drive (create the folder if it's missing, and tell her it's there), plus any uploaded in the request. Use the clips added since her last Day in the life video (the newest batch). Never move, rename or delete her clips. Look at a few frames of each to know what's in it, and sort them into the order of her day (the request may list it; otherwise morning to night by what you see and the file times).

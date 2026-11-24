@@ -7,6 +7,8 @@ description: Turns her voice memo into a whole branded video with nobody on came
 
 First read `../../reference/hq-map.md` (Brand Brain rules, and "Studio makers" for where things go and how to deliver) and `~/Hot Mess HQ/settings.md` (her folders). Use the hyperframes skill for building, transcribing and rendering. Her voice sets the timing: never build a silent version and fit her voice to it afterwards.
 
+Any words you write for her audience (hooks, on-screen words, headlines, captions) follow the map's "Her marketing method" section as well as her voice. Her own words and notes are never rewritten to fit it.
+
 ## 1. Get the memo
 
 From the request: the memo (an uploaded file id, or a file name in her Raw videos folders), what it's about, the size (9:16 = 1080x1920, 4:5 = 1080x1350, 16:9 = 1920x1080) and captions yes or no. Any audio or video file works; take only the sound. Never move or delete her original (only a "raw-cleanup" request, hq-video part E, clears it out later).

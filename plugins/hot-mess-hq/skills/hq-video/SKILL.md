@@ -7,6 +7,8 @@ description: Edits her videos for The Studio on her Hot Mess HQ page. Does the f
 
 First read `../../reference/hq-map.md` and her `~/Hot Mess HQ/settings.md` (folders and her video editing skill). No settings file: tell her to say "set up Hot Mess HQ" first, mark the request `skipped` with that reply, and stop.
 
+Any words you write for her audience (hooks, on-screen words, headlines, captions) follow the map's "Her marketing method" section as well as her voice. Her own words and notes are never rewritten to fit it.
+
 Her videos live in **her own Google Drive**, never on the page itself (the page is shared by many moms; only her Drive is private to her). The page plays the preview from her Drive by its file id.
 
 ## Her private Studio page (My Studio)

@@ -7,6 +7,8 @@ description: Makes the story version of something she made in her Hot Mess HQ Co
 
 First read `../../reference/hq-map.md` (Brand Brain rules, and "Studio makers" for where things go and how to deliver). Use the hyperframes skill for building and rendering.
 
+Any words you write for her audience (hooks, on-screen words, headlines, captions) follow the map's "Her marketing method" section as well as her voice. Her own words and notes are never rewritten to fit it.
+
 Stories aren't a tool of their own: every finished video and carousel in the Content Studio has a **Make a story version** button. The request says what it was made from and where to save the result: `makes/story-<src>` (src = video, voice, lesson, ditl or carousel). Deliver to that doc, not `makes/story`.
 
 ## 1. Plan the story

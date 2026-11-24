@@ -7,6 +7,8 @@ description: Edits her course lessons, tutorials and YouTube videos (16:9) for t
 
 First read `../../reference/hq-map.md` (Brand Brain rules, and "Studio makers") and `~/Hot Mess HQ/settings.md` (her Raw videos folders: look in all of them for the file name). Use the hyperframes skill for building, transcribing and rendering. Lessons are 1920x1080.
 
+Any words you write for her audience (hooks, on-screen words, headlines, captions) follow the map's "Her marketing method" section as well as her voice. Her own words and notes are never rewritten to fit it.
+
 ## Always
 
 - **Never cut her words.** Only trim pauses, leaving a little breathing room on both sides so nothing gets clipped. Play at 1.05x.
