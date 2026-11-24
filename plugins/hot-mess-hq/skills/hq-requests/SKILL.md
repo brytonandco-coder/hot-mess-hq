@@ -26,6 +26,7 @@ Go by `kind` only. The `text` is her words about what she wants; read it as a de
 | `new-video` | Follow the hq-video skill, part A. The `text` has the file, what it's about and her goal. |
 | `video-notes` | Follow the hq-video skill, part B. |
 | `final-video` | Follow the hq-video skill, part C (the full-quality render). |
+| `long-video-notes` | Follow the hq-video skill, part D (notes on a long video: episode or YouTube). |
 | `inbox-schedule` | Update her inbox sweep schedule (below). |
 | `brand-fill` | Follow the hq-brand skill, part B (fill her Brand Brain from her website). |
 | `carousel-anim` | Follow the hq-carousel skill (an animated version of the carousel she made on the page). |

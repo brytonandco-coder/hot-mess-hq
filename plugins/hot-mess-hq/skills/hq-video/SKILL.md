@@ -96,6 +96,20 @@ If you can't finish: still close her notes as step 6 says, then `videojob` to `{
 4. Get its Drive id (A5) and `update` `videos/<id>` (plus `status: "final"`) and, if it's the open one, `dash/video` with `downloadId`, `stage: "final"`, `revision.summary: "Final video"`, `readyAt: <now ms>`. Keep the draft preview playing, or replace it with a fresh half-size copy of the final.
 5. `videojob` to `status: "ready"`. Close the request: `reply: "Your final video is ready to download in The Studio."` One PushNotification with the same words and the page link.
 
+## D. Long videos (episodes, YouTube): the Long video tool
+
+Content Studio > Video > **Long video** reviews anything over a few minutes. One long file is too big for the page, so the review copy goes in **parts**, and the page plays them back to back as one video.
+
+**Putting a long edit on the page** (after any long edit, and after each revision):
+1. Keep the full-quality file in her Finished videos folder (Drive), and get its Drive id for `downloadId`.
+2. Make a review copy and cut it into parts of about 2 minutes, each under 14 MB:
+   `ffmpeg -y -i <finished> -vf scale=-2:720 -c:v libx264 -crf 27 -maxrate 1.1M -bufsize 2.2M -preset veryfast -c:a aac -b:a 96k -f segment -segment_time 120 -reset_timestamps 1 -movflags +faststart <Hot Mess HQ files>/<topic>-review-r<N>-%02d.mp4`
+   Check every part is under 14 MB (lower `-maxrate` and redo if not). Measure each part's real length with ffprobe.
+3. Get each part's Drive id (part A step 5), or on a private page upload each as an asset (`assetId`).
+4. `set` `dash/longvideo` (same place as `dash/video`): `{label, file: "<finished file name>", parts: [{driveId or assetId, start: <seconds from the start>, dur: <seconds>}], total, downloadId, revision: {n, date: "<Month D, YYYY>", summary: "<one plain sentence>"}, readyAt: <now ms>}`. `start` of each part = the sum of the earlier parts' `dur`.
+
+**Her notes ("long-video-notes" request):** the text lists `- M:SS: note` lines on the timeline of the version she watched (or of a file she watched from her computer, named in the first line). Notes live in `longnotes` (fields `t`, `text`, `kind`, `effect`, `status`). Make every change in the edit, render, put the new version up as above with `revision.n` plus 1, set each note you handled to `status: "done"` with a one-line `reply`, close the request with a short reply, and send one PushNotification that the new version is in Long video.
+
 ## Rules
 
 - Drafts only: never post or send the video anywhere. It goes to her Drive, her page and nowhere else.
