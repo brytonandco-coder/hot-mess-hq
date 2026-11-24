@@ -36,6 +36,7 @@ Go by `kind` only. The `text` is her words about what she wants; read it as a de
 | `ditl-make`, `ditl-notes` | Follow the hq-day-in-life skill (her clips cut into a Day in the life reel in her saved style, or her notes). |
 | `schedule-post` | Follow the hq-schedule skill (schedule an approved post in the tool she uses). |
 | `posts-sync` | Follow the hq-schedule skill, "Mirror her posting app" (refresh the Post planner from her tool now). |
+| `raw-cleanup` | Follow the hq-video skill, part E (she said yes to deleting the raw files she used for a finished video, voice memo video or carousel: move only the listed files to her Google Drive trash). |
 | `biz-update` | Follow the hq-business skill (her sales, CRM, ads and email list numbers on At a glance). |
 | `recipe-link` | Follow the hq-kitchen skill, part A (add a recipe from a website to her recipe box). |
 | `grocery-cart` | Follow the hq-kitchen skill, part B (a store cart link from her grocery list; never buys). |

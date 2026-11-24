@@ -10,7 +10,7 @@ First read `../../reference/hq-map.md` (Brand Brain rules, and "Studio makers") 
 ## Always
 
 - **Never cut her words.** Only trim pauses, leaving a little breathing room on both sides so nothing gets clipped. Play at 1.05x.
-- Voice: `highpass=f=80,afftdn=nf=-25,deesser,acompressor=threshold=-20dB:ratio=3`, then loudness about -11.5 LUFS with a limiter at -1 dB.
+- Voice: clean it with `../../reference/voice-cleanup.md` (light), then loudness about -11.5 LUFS with a limiter at -1 dB.
 - Soft sound effects on graphics, well under her voice. Captions (unless `makeprefs.captions` is false) in a band underneath, one highlighted word per line in her `accent`.
 - Transcribe with `npx hyperframes transcribe` first; every graphic lands on her exact word.
 

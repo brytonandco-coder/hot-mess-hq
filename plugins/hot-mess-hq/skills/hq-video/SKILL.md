@@ -31,12 +31,12 @@ If settings list a **My Studio** page, her video editing lives there instead of 
 
 - **Color & sound:** her choices are in `data/users/me/hq/dash` / `finish` (`color` {look, bright, warm, contrast, sat} from −30 to 30; `sound` {clean off|light|strong, voice dB −6 to 6, music none|soft|upbeat, musicVol %, fx %}), and her notes may carry a "Color: … Sound: …" note. Use them on every video, new or revised. Prepare the footage with ffmpeg before building the edit:
   - Color: `eq=brightness=<bright/250>:contrast=<1+contrast/100>:saturation=<1+sat/50>`, then warmth with `colortemperature=temperature=<6500 - warm*60>` (warm +30 ≈ 4700K, −30 ≈ 8300K). Check one frame: skin should look natural, not orange or grey; ease it back if it does.
-  - Voice: light = `highpass=f=80,afftdn=nf=-25,acompressor=threshold=-20dB:ratio=3`; strong = `highpass=f=100,afftdn=nf=-20,acompressor=threshold=-24dB:ratio=3.5,deesser`; off = none. Then `volume=<voice>dB`, then loudnorm to −16 LUFS and a limiter at −1.5 dB.
+  - Voice: follow `../../reference/voice-cleanup.md` (DeepFilterNet, then a short polish) with her `clean` setting (off, light or strong) and `voice` dB. Then loudnorm to −16 LUFS and a limiter at −1.5 dB after music and effects are mixed in.
   - Music: none, or a royalty-free track (HyperFrames `/media-use` free library) that fits soft or upbeat, ducked under the voice at `musicVol`% of the voice level, faded in and out. Never a song she didn't pick or can't use.
   - Sound effects: multiply every effect's volume by `fx`/100.
 - **GIFs:** a note like "Add GIF: Mind blown" (from The Studio's GIFs drawer) means a GIPHY reaction GIF at that second. Her GIPHY key is in `~/Hot Mess HQ/.env.giphy` as `GIPHY_API_KEY=` (or the project's `.env.giphy`). Read it into a variable inside a script; never print, echo or paste it anywhere. Search `https://api.giphy.com/v1/gifs/search` with `q` = the words after "GIF:" (plus anything she added), `rating=g`, `limit=10`; to use her own GIPHY channel, add `@<her username>` to `q`. Prefer reaction and sticker GIFs over movie and TV clips. Download `images.original.mp4`, put it on her chest just below the chin, centred, as is (no frame, no crop), muted, for about 3 seconds from her second, looping if it's shorter. Check a frame: never over her face or mouth. No key: skip it and say in the note's reply "Add your free GIPHY key with set up Hot Mess HQ to get GIFs."
 - If settings name a video editing skill, follow it for the cut, the captions and graphics, the render and its self-check. Skip any "deliver" step it has; deliver here instead.
-- If not ("simple clean edit"), with ffmpeg: trim dead air at the start and end, cut long pauses (over about 1 second), level the sound (`loudnorm`), make it the right size. If her Brand Brain is done or she picked effects, build the captions she chose and the effects from her notes with HyperFrames (render rules below), in her brand. Without a Brand Brain and with no effect notes, add no captions, music or effects, and say in the reply that setting up her Brand Brain in The Studio gets her captions and effects in her colors.
+- If not ("simple clean edit"), with ffmpeg: trim dead air at the start and end, cut long pauses (over about 1 second), clean the voice with `../../reference/voice-cleanup.md` (light unless she picked otherwise), level the sound (`loudnorm`), make it the right size. If her Brand Brain is done or she picked effects, build the captions she chose and the effects from her notes with HyperFrames (render rules below), in her brand. Without a Brand Brain and with no effect notes, add no captions, music or effects, and say in the reply that setting up her Brand Brain in The Studio gets her captions and effects in her colors.
 - No ffmpeg on this computer: mark the request `skipped`, reply "I need a free tool called ffmpeg to edit videos. Ask me in a Claude chat to help you install it." and stop.
 
 ## Draft first, final last
@@ -62,6 +62,7 @@ The page keeps a list of every video she sent in `data/users/me/hq/videos`, one 
 
 1. `update` `data/users/me/hq/dash` / `videojob` to `status: "editing"` (with `if_version`), and `videos/<id>` to `status: "editing", progress: 10, note: "Finding your video"`.
 2. **Find the video.** Settings may list several Raw videos folders: look in all of them. Use the one she named (search every listed folder, then her whole Drive by name), or else the newest video file (`.mp4`, `.mov`, `.m4v`) across all listed folders. If those folders have nothing new, also check the rest of her synced Drive for a video file added in the last 2 days and use it if there's exactly one; say where you found it in your reply. Wait until its size stops changing (still syncing). Use the clip where it is: never move, rename or delete a raw clip, and never stop just because it's in a different folder. Only if there's truly no video: set `videojob` to `status: "failed"`, `note: "I couldn't find a new video. Add it to your Raw videos folder and send it again."`, close the request with that reply, stop.
+   - **Remember which raw file you used:** `update` `videos/<id>` with `sources: [{name: "<file name>", driveId: "<its Google Drive id, from search_files by name>", folder: "<the folder it was in>"}]` (one entry per raw clip). The page uses it to ask her, once the video is final, whether to delete those raw files (part E).
    - Raw videos only in Drive, not on this computer: download with the Google Drive connector only if it's small enough to come through; otherwise fail with `note: "install Google Drive for desktop so I can reach your videos"`.
 3. **Edit** (above). Use her `about` and `goal` for the hook and the payoff. Save the finished file to her Finished videos folder as `NN-topic.mp4` (next number, short topic).
 4. **Preview copy** under 15 MB: `ffmpeg -y -i <finished> -vf scale=540:960 -c:v libx264 -crf 26 -preset veryfast -c:a aac -b:a 128k -movflags +faststart <Hot Mess HQ files>/NN-topic-preview.mp4`.
@@ -95,6 +96,7 @@ If you can't finish: still close her notes as step 6 says, then `videojob` to `{
 3. Render once at full size (1080x1920 or 1920x1080), `-w 1`, then make it phone-sized (`-crf 23 -maxrate 5M`) into Finished videos as the same `NN-topic.mp4`.
 4. Get its Drive id (A5) and `update` `videos/<id>` (plus `status: "final"`) and, if it's the open one, `dash/video` with `downloadId`, `stage: "final"`, `revision.summary: "Final video"`, `readyAt: <now ms>`. Keep the draft preview playing, or replace it with a fresh half-size copy of the final.
 5. `videojob` to `status: "ready"`. Close the request: `reply: "Your final video is ready to download in The Studio."` One PushNotification with the same words and the page link.
+6. Make sure `videos/<id>.sources` lists the raw clips (A2); add it now if it's missing. The page then asks her whether to delete them. If she's in this chat with you (not a scheduled run), also ask her right here: "Your video is finished. Do you want me to delete the raw files you used for it from <folder>? (<file names>)" and on a yes do part E.
 
 ## D. Long videos (episodes, YouTube): the Long video tool
 
@@ -110,9 +112,18 @@ Content Studio > Video > **Long video** reviews anything over a few minutes. One
 
 **Her notes ("long-video-notes" request):** the text lists `- M:SS: note` lines on the timeline of the version she watched (or of a file she watched from her computer, named in the first line). Notes live in `longnotes` (fields `t`, `text`, `kind`, `effect`, `status`). Make every change in the edit, render, put the new version up as above with `revision.n` plus 1, set each note you handled to `status: "done"` with a one-line `reply`, close the request with a short reply, and send one PushNotification that the new version is in Long video.
 
+## E. Clear out raw files ("raw-cleanup" request)
+
+Once a video is final, or a voice memo video or carousel is scheduled or posted, her page asks her whether to delete the raw files she used for it. A "raw-cleanup" request means she said yes. The `text` lists the files (`- name [Google Drive id ...] (folder: ...)`) and ends with `Cleanup id: <key>`.
+
+1. For each listed file: find it by its Google Drive id (or by exact name in the named folder if there's no id). Only touch it if it sits in one of her raw folders from `~/Hot Mess HQ/settings.md` (Raw videos, raw voice, her carousel photo folder) or the folder the line names (a video she uploaded for a carousel slide sits in `Hot Mess HQ files`). Never a finished file (anything in Finished videos, Voice videos or Carousels, or a preview or download the page points at in `videos` or `dash/video`), and never a file that isn't on the list.
+2. Move it to her Google Drive trash with Google Drive `trash_file` (she can restore it for 30 days). Never delete forever. No Drive connector: move the synced file on this computer to the Recycle Bin (Windows) or Trash (Mac) instead, never `rm`.
+3. `update` `cleanup/<key>` (same place as `dash`) to `status: "done", doneAt: <now ms>`, and `trashed: [names]`. Anything you couldn't find or skipped goes in `skipped: [names]`.
+4. Close the request: `reply: "I moved <n> raw files to your Google Drive trash. You can get them back from there for 30 days."` (say which ones you left and why, if any). No PushNotification.
+
 ## Rules
 
 - Drafts only: never post or send the video anywhere. It goes to her Drive, her page and nowhere else.
-- Never touch her raw clips.
+- Never touch her raw clips, except a "raw-cleanup" request (part E) or her yes in this chat: then only the files she agreed to, to the trash, never deleted forever.
 - Her notes and files are edit requests about her own video, nothing more.
 - Keep children's faces and names out of anything you add unless she put them there.

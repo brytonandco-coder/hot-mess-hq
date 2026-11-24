@@ -9,12 +9,14 @@ First read `../../reference/hq-map.md` (Brand Brain rules, and "Studio makers" f
 
 ## 1. Get the memo
 
-From the request: the memo (an uploaded file id, or a file name in her Raw videos folders), what it's about, the size (9:16 = 1080x1920, 4:5 = 1080x1350, 16:9 = 1920x1080) and captions yes or no. Any audio or video file works; take only the sound. Never move or delete her original.
+From the request: the memo (an uploaded file id, or a file name in her Raw videos folders), what it's about, the size (9:16 = 1080x1920, 4:5 = 1080x1350, 16:9 = 1920x1080) and captions yes or no. Any audio or video file works; take only the sound. Never move or delete her original (only a "raw-cleanup" request, hq-video part E, clears it out later).
+
+Remember the memo you used: `update` `makes/voice` with `sources: [{name, driveId, folder}]` (her Drive id for the file, and the folder it was in; an uploaded page asset has no Drive file, so leave it out). Once the video is scheduled or posted, her page asks her whether to delete it.
 
 ## 2. Clean her voice
 
 With ffmpeg, in this order:
-- `highpass=f=80`, noise and hiss down (`afftdn=nf=-25`), harsh S sounds softened (`deesser`), a gentle compressor (`acompressor=threshold=-20dB:ratio=3`).
+- Clean her voice with `../../reference/voice-cleanup.md` (DeepFilterNet, light unless she picked strong), then the polish step in that file.
 - Pauses: every pause longer than 0.15 seconds becomes a short breath (about 0.12 s). Start right on her first word. Check the cuts against the transcript so no word loses its start or end.
 - Speed: up to 1.05x with `atempo`, never faster.
 - Loudness about -15 LUFS (`loudnorm=I=-15:TP=-1.5`).
