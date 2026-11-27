@@ -32,7 +32,7 @@ If yes:
 
 `get` `data/users/me/hq/dash` / `brand`. If `done` is true, say "I've got your Brand Brain: <business>, <her colors as names>." and move on.
 
-If not, explain in one sentence: "Your Brand Brain tells me your colors, logo, fonts and voice, so every effect, caption and note I make looks and sounds like you." Then ask: "Want to fill it in on your page (the Brand Brain button in The Studio), or answer it here with me?"
+If not, explain in one sentence: "Your Brand Brain tells me your colors, logo, fonts and voice, so every effect, caption and note I make looks and sounds like you." Then ask: "Want to fill it in on your page (the Brand Brain tab in your Second Brain), or answer it here with me?"
 - On the page: tell her where it is and carry on.
 - Here: follow the hq-brand skill, part A.
 
